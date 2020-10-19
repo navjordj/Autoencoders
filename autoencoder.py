@@ -27,8 +27,8 @@ class DenseAutoencoder():
 
 
 
-    def fit(self, X, epochs, batch_size, shuffle=True):
-        self.autoencoder.fit(X, X, epochs=epochs, batch_size=batch_size, shuffle=shuffle)
+    def fit(self, X, epochs, batch_size, shuffle=True, callback=[]):
+        self.autoencoder.fit(X, X, epochs=epochs, batch_size=batch_size, shuffle=shuffle, callbacks=callback)
         print(type(self.autoencoder))
         
 
