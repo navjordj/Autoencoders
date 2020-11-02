@@ -25,37 +25,41 @@ class ConvAutoencoder():
         self.decoder = None
         self.autoencoder = self._create_model()
 
-
     def fit(self, X, epochs, batch_size, shuffle=True, callback=[]):
-        self.autoencoder.fit(X, X, epochs=epochs, batch_size=batch_size, shuffle=True, callbacks=callback)
-        
+        self.autoencoder.fit(
+            X, X, epochs=epochs, batch_size=batch_size, shuffle=True, callbacks=callback)
+
     def predict(self):
-        pass 
+        pass
 
     def encode(self):
-        raise NotImplementedError() 
+        raise NotImplementedError()
 
     def decode(self):
         raise NotImplementedError()
 
     def _create_model(self):
-        
+
         input = Input(shape=self.input_shape)
 
         encoded = input
         for filter_size in self.filter_sizes:
-            encoded = Conv2D(filter_size, self.kernel_size, self.strides, padding="same", activation=self.activation)(encoded)
+            encoded = Conv2D(filter_size, self.kernel_size, self.strides,
+                             padding="same", activation=self.activation)(encoded)
             encoded = MaxPooling2D(self.pool_shape, padding="same")(encoded)
 
         decoded = encoded
         for filter_size in reversed(self.filter_sizes[1:]):
-            decoded = Conv2D(filter_size, self.kernel_size, self.strides, padding="same", activation=self.activation)(decoded)
+            decoded = Conv2D(filter_size, self.kernel_size, self.strides,
+                             padding="same", activation=self.activation)(decoded)
             decoded = UpSampling2D(self.pool_shape)(decoded)
 
-        decoded = Conv2D(self.filter_sizes[0], self.kernel_size, self.strides, activation=self.activation)(decoded)
+        decoded = Conv2D(self.filter_sizes[0], self.kernel_size,
+                         self.strides, activation=self.activation)(decoded)
         decoded = UpSampling2D(self.pool_shape)(decoded)
 
-        decoded = Conv2D(1, self.kernel_size, self.strides, padding="same", activation=self.activation)(decoded)
+        decoded = Conv2D(1, self.kernel_size, self.strides,
+                         padding="same", activation=self.activation)(decoded)
 
         model = Model(input, decoded)
         model.summary()
@@ -63,8 +67,7 @@ class ConvAutoencoder():
     def _conv_output_shape(self):
         pass
 
-        
-
 
 if __name__ == "__main__":
-    model = ConvAutoencoder(input_shape=(28, 28, 1), filter_sizes=[16, 8, 8], kernel_size=(3, 3))
+    model = ConvAutoencoder(input_shape=(28, 28, 1), filter_sizes=[
+                            16, 8, 8], kernel_size=(3, 3))

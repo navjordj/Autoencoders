@@ -24,15 +24,12 @@ class DenseAutoencoder():
         self.decoder = None
         self.autoencoder = self._create_model()
 
-
-
-
     def fit(self, X, epochs, batch_size, shuffle=True, callback=[]):
-        self.autoencoder.fit(X, X, epochs=epochs, batch_size=batch_size, shuffle=shuffle, callbacks=callback)
+        self.autoencoder.fit(
+            X, X, epochs=epochs, batch_size=batch_size, shuffle=shuffle, callbacks=callback)
         print(type(self.autoencoder))
-        
 
-        # Creating encoder: 
+        # Creating encoder:
         input = Input(shape=self.input_shape)
         encoded = input
         for layer in self.autoencoder.layers[:len(self.layer_sizes)+2]:
@@ -41,9 +38,10 @@ class DenseAutoencoder():
         self.encoder = Model(input, encoded)
         self.encoder.summary()
 
-        assert self.encoder.get_weights()[0].all() == self.autoencoder.get_weights()[0].all()
+        assert self.encoder.get_weights()[0].all(
+        ) == self.autoencoder.get_weights()[0].all()
 
-        # Creating decoder: 
+        # Creating decoder:
         input = Input(shape=(self.latent_dim, ))
         decoded = input
         for layer in self.autoencoder.layers[len(self.layer_sizes)+2:]:
@@ -52,19 +50,17 @@ class DenseAutoencoder():
         self.decoder = Model(input, decoded)
         self.decoder.summary()
 
-        assert self.decoder.get_weights()[-1].all() == self.autoencoder.get_weights()[-1].all()
-
-
+        assert self.decoder.get_weights(
+        )[-1].all() == self.autoencoder.get_weights()[-1].all()
 
     def predict(self, X):
         return self.autoencoder.predict(X)
 
     def encode(self, X):
-        return self.encoder.predict(X) 
+        return self.encoder.predict(X)
 
     def decode(self, encoded):
         return self.decoder.predict(encoded)
-
 
     def _create_model(self):
 
@@ -74,9 +70,8 @@ class DenseAutoencoder():
 
         for size in self.layer_sizes:
             encoded = Dense(size, activation=self.activation)(encoded)
-    
-        encoded = Dense(self.latent_dim, activation="relu")(encoded)
 
+        encoded = Dense(self.latent_dim, activation="relu")(encoded)
 
         decoded = encoded
         for size in reversed(self.layer_sizes[:-1]):
