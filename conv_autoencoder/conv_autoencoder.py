@@ -27,8 +27,8 @@ class ConvAutoencoder():
 
 
     def fit(self, X, epochs, batch_size, shuffle=True, callback=[]):
-        pass
-
+        self.autoencoder.fit(X, X, epochs=epochs, batch_size=batch_size, shuffle=True, callbacks=callback)
+        
     def predict(self):
         pass 
 
