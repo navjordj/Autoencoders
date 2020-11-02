@@ -57,16 +57,13 @@ class DenseAutoencoder():
 
 
     def predict(self, X):
-        predictions = self.autoencoder.predict(X)
-        return predictions
+        return self.autoencoder.predict(X)
 
     def encode(self, X):
-        encoded = self.encoder.predict(X)
-        return encoded 
+        return self.encoder.predict(X) 
 
     def decode(self, encoded):
-        decoded = self.decoder.predict(encoded) 
-        return decoded
+        return self.decoder.predict(encoded)
 
 
     def _create_model(self):
