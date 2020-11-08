@@ -2,3 +2,6 @@
 /__pycache__
 
 *.mp4
+/conv_autoencoder/celebrity_exploration/data/celeba-dataset
+/conv_autoencoder/data
+*.pyc
